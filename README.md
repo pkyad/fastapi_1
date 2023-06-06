@@ -27,6 +27,8 @@ make install
 ## Running Tests
 
 `make test`
+or
+`pytest`
 
 ## Access Swagger Documentation
 
