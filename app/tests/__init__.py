@@ -1,1 +1,0 @@
-from app.tests.testconf import *
