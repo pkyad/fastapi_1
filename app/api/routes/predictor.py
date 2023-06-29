@@ -1,7 +1,5 @@
-import json
 from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException, Depends
-from typing import List
 
 from db.dependencies import get_db_session
 from db.models.notes import notes
@@ -57,7 +55,7 @@ from fastapi import Request
 
 @router.get(
     "/notes/",
-    response_model=List[Note],
+    response_model=list[Note],
     name="db-test:get-data",
 )
 async def read_notes(request: Request, db: AsyncSession = Depends(get_db_session)):

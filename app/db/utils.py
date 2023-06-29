@@ -19,6 +19,7 @@ async def create_database() -> None:
         database_exists = database_existance.scalar() == 1
 
     if database_exists:
+        print("Deleting DB")
         await drop_database()
 
     async with engine.connect() as conn:  # noqa: WPS440

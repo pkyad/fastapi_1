@@ -42,8 +42,6 @@ class Settings(BaseSettings):
     API_PREFIX = "/api"
     VERSION = "0.1.0"
     DEBUG: bool = config("DEBUG", cast=bool, default=False)
-    MAX_CONNECTIONS_COUNT: int = config("MAX_CONNECTIONS_COUNT", cast=int, default=10)
-    MIN_CONNECTIONS_COUNT: int = config("MIN_CONNECTIONS_COUNT", cast=int, default=10)
     SECRET_KEY: Secret = config("SECRET_KEY", cast=Secret, default="")
 
     PROJECT_NAME: str = config("PROJECT_NAME", default="test4")
@@ -68,7 +66,7 @@ class Settings(BaseSettings):
     log_level: LogLevel = LogLevel.INFO
 
     # Variables for the database
-    db_host: str = "192.168.10.220"
+    db_host: str = config("DB_HOST", cast=str, default="")
     db_port: int = 5432
     db_user: str = "postgres"
     db_pass: str = "postgres"

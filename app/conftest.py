@@ -9,12 +9,13 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from app.main import get_application
-from app.db.dependencies import get_db_session
-from app.settings import settings
-from app.db.utils import create_database, drop_database
+from main import get_application
+from db.dependencies import get_db_session
+from settings import settings
+from db.utils import create_database, drop_database
 
-print("setting up fixures")
+from db.meta import meta  # noqa: WPS433
+from db.models import load_all_models  # noqa: WPS433
 
 
 @pytest.fixture(scope="session")
@@ -34,8 +35,6 @@ async def _engine() -> AsyncGenerator[AsyncEngine, None]:
 
     :yield: new engine.
     """
-    from app.db.meta import meta  # noqa: WPS433
-    from app.db.models import load_all_models  # noqa: WPS433
 
     load_all_models()
 
