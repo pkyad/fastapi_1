@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import (
 from main import get_application
 from db.dependencies import get_db_session
 from settings import settings
-from db.utils import create_database, drop_database
+from db.utils import drop_database  # create_database
 
 from db.meta import meta  # noqa: WPS433
 from db.models import load_all_models  # noqa: WPS433
@@ -38,7 +38,7 @@ async def _engine() -> AsyncGenerator[AsyncEngine, None]:
 
     load_all_models()
 
-    await create_database()
+    # await create_database()
 
     engine = create_async_engine(str(settings.db_url))
     async with engine.begin() as conn:

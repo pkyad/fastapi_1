@@ -11,8 +11,9 @@ from sqlalchemy.ext.asyncio import (
 from db.meta import meta
 from db.models import load_all_models
 
-# from fastapi_v1.services.redis.lifetime import init_redis, shutdown_redis
+from cache.lifetime import init_redis, shutdown_redis
 from settings import settings
+
 
 print(settings.dict())
 
@@ -67,7 +68,7 @@ def register_startup_event(
 
         await _create_tables()
 
-        # init_redis(app)
+        init_redis(app)
         pass  # noqa: WPS420
 
     return _startup
@@ -87,7 +88,7 @@ def register_shutdown_event(
     async def _shutdown() -> None:  # noqa: WPS430
         await app.state.db_engine.dispose()
 
-        # await shutdown_redis(app)
+        await shutdown_redis(app)
         pass  # noqa: WPS420
 
     return _shutdown

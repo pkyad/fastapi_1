@@ -21,6 +21,12 @@ httptools = "^0.5.0"
 greenlet = "^2.0.2"
 coverage = "^7.2.1"
 
+# Remove this and add `types-redis`
+# when the issue https://github.com/python/typeshed/issues/8242 is resolved.
+[[tool.mypy.overrides]]
+module = [
+    'redis.asyncio'
+]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2"

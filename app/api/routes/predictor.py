@@ -4,7 +4,8 @@ from fastapi import APIRouter, HTTPException, Depends
 from db.dependencies import get_db_session
 from db.models.notes import notes
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from cache.dependency import get_redis_pool
+from redis.asyncio import ConnectionPool, Redis
 
 router = APIRouter()
 
@@ -62,3 +63,19 @@ async def read_notes(request: Request, db: AsyncSession = Depends(get_db_session
     q = await db.execute(notes.select())
     results = q.tuples()
     return [Note(id=r.id, text=r.text, completed=r.completed) for r in results]
+
+
+@router.get(
+    "/cache-test/",
+    response_model=str,
+    name="db-test:get-data-from-cache",
+)
+async def read_cache(
+    request: Request,
+    db: AsyncSession = Depends(get_db_session),
+    redis_pool: ConnectionPool = Depends(get_redis_pool),
+):
+    async with Redis(connection_pool=redis_pool) as redis:
+        await redis.set("mykey", "cached-val")
+        data = await redis.get("mykey")
+    return data

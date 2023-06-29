@@ -72,7 +72,7 @@ class Settings(BaseSettings):
     db_echo: bool = True
 
     # Variables for Redis
-    redis_host: str = "fastapi_v1-redis"
+    redis_host: str
     redis_port: int = 6379
     redis_user: Optional[str] = None
     redis_pass: Optional[str] = None
