@@ -1,14 +1,14 @@
 from db.meta import meta
-import sqlalchemy
+from sqlalchemy import Table, Column, Integer, String, Boolean
 from pydantic import BaseModel
 
 
-notes = sqlalchemy.Table(
+Note = Table(
     "notes",
     meta,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("text", sqlalchemy.String),
-    sqlalchemy.Column("completed", sqlalchemy.Boolean),
+    Column("id", Integer, primary_key=True),
+    Column("text", String),
+    Column("completed", Boolean),
 )
 
 

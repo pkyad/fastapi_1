@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request
 import time
 from fastapi.responses import JSONResponse
 from api.routes.api import router as api_router
-from core.events import create_start_app_handler
 from settings import settings
 from lifetime import register_shutdown_event, register_startup_event
 from http import HTTPStatus
@@ -16,8 +15,6 @@ def get_application() -> FastAPI:
     pre_load = False
     register_startup_event(application)
     register_shutdown_event(application)
-    if pre_load:
-        application.add_event_handler("startup", create_start_app_handler(application))
 
     @application.middleware("http")
     # type: ignore
