@@ -11,7 +11,7 @@ class Tenant(Model):
     name: Mapped[str] = mapped_column(String(50))
     expiry_date: Mapped[str] = mapped_column(String(50))
     is_active: Mapped[bool] = mapped_column(Boolean)
-    users: Mapped[list["Administrator"]] = relationship()
+    users: Mapped[list["Administrator"]] = relationship(back_populates="tenant")
 
 
 class Administrator(Model):
