@@ -29,22 +29,6 @@ class Administrator(Model):
     tenant: Mapped["Tenant"] = relationship(back_populates="users")
 
 
-# Administrator = Table(
-#     "shared_tenant",
-#     meta,
-#     Column("id", Integer, primary_key=True),
-#     Column("name", String),
-#     Column("mobile", String),
-#     Column("email", String),
-#     Column("is_active", Boolean),
-#     Column("is_staff", Boolean),
-#     Column("is_admin", Boolean),
-#     Column("password_change_required", Boolean),
-#     Column("next_password_change_due", String),
-#     Column("tenant", ForeignKey),
-# )
-
-
 class AdministratorT(BaseModel):
     id: int
     name: str
