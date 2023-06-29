@@ -61,7 +61,7 @@ async def read_notes(request: Request, db: AsyncSession = Depends(get_db_session
     response_model=list[TenantT],
     name="db-test:get-data-foreign-key",
 )
-async def read_notes(request: Request, db: AsyncSession = Depends(get_db_session)):
+async def getTanants(request: Request, db: AsyncSession = Depends(get_db_session)):
     db.expire_on_commit = False
     q = await db.scalars(select(Tenant).options(selectinload(Tenant.users)))
 
@@ -94,7 +94,9 @@ async def read_notes(request: Request, db: AsyncSession = Depends(get_db_session
     response_model=list[TenantT],
     name="db-test:get-data-with-join",
 )
-async def read_notes(request: Request, db: AsyncSession = Depends(get_db_session)):
+async def getTenantsWithJoin(
+    request: Request, db: AsyncSession = Depends(get_db_session)
+):
     db.expire_on_commit = False
     q = await db.scalars(
         select(Tenant).options(joinedload(Tenant.users, innerjoin=True))
