@@ -1,5 +1,7 @@
 from db.meta import meta
 import sqlalchemy
+from pydantic import BaseModel
+
 
 notes = sqlalchemy.Table(
     "notes",
@@ -8,3 +10,9 @@ notes = sqlalchemy.Table(
     sqlalchemy.Column("text", sqlalchemy.String),
     sqlalchemy.Column("completed", sqlalchemy.Boolean),
 )
+
+
+class NoteT(BaseModel):
+    id: int
+    text: str
+    completed: bool

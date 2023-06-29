@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException, Depends
 
 from db.dependencies import get_db_session
-from db.models.notes import notes
+from db.models.notes import notes, NoteT
 from sqlalchemy.ext.asyncio import AsyncSession
 from cache.dependency import get_redis_pool
 from redis.asyncio import ConnectionPool, Redis
@@ -40,29 +40,18 @@ async def health():
     return HealthResponse(status=True)
 
 
-class NoteIn(BaseModel):
-    text: str
-    completed: bool
-
-
-class Note(BaseModel):
-    id: int
-    text: str
-    completed: bool
-
-
 from fastapi import Request
 
 
 @router.get(
     "/notes/",
-    response_model=list[Note],
+    response_model=list[NoteT],
     name="db-test:get-data",
 )
 async def read_notes(request: Request, db: AsyncSession = Depends(get_db_session)):
     q = await db.execute(notes.select())
     results = q.tuples()
-    return [Note(id=r.id, text=r.text, completed=r.completed) for r in results]
+    return [NoteT(id=r.id, text=r.text, completed=r.completed) for r in results]
 
 
 @router.get(
