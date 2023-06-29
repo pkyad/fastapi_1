@@ -14,6 +14,8 @@ from db.models import load_all_models
 # from fastapi_v1.services.redis.lifetime import init_redis, shutdown_redis
 from settings import settings
 
+print(settings.dict())
+
 
 def _setup_db(app: FastAPI) -> None:  # pragma: no cover
     """
@@ -62,8 +64,9 @@ def register_startup_event(
     @app.on_event("startup")
     async def _startup() -> None:  # noqa: WPS430
         _setup_db(app)
-        print("will create tables")
+
         await _create_tables()
+
         # init_redis(app)
         pass  # noqa: WPS420
 

@@ -105,3 +105,32 @@ Deploying inference service to AWS Lambda
 `aws cloudformation delete-stack --stack-name <STACK_NAME_ON_CREATION>`
 
 Made by https://github.com/arthurhenrique/cookiecutter-fastapi/graphs/contributors with ❤️
+
+Notes:
+
+INSERT INTO notes (text, completed) VALUES ('first' , TRUE);
+INSERT INTO notes (text, completed) VALUES ('second' , TRUE);
+
+docker exec test4-app-1 pytest
+
+db_url = make_url(str(settings.db_url.with_path("/postgres")))
+engine = create_async_engine(db_url, isolation_level="AUTOCOMMIT")
+
+    async with engine.connect() as conn:
+        database_existance = await conn.execute(
+            text(
+                f"SELECT 1 FROM pg_database WHERE datname='{settings.db_base}'",  # noqa: E501, S608
+            ),
+        )
+        database_exists = database_existance.scalar() == 1
+
+    if database_exists:
+        print("Deleting DB")
+        await drop_database()
+
+    async with engine.connect() as conn:  # noqa: WPS440
+        await conn.execute(
+            text(
+                f'CREATE DATABASE "{settings.db_base}" ENCODING "utf8" TEMPLATE template1',  # noqa: E501
+            ),
+        )

@@ -10,8 +10,6 @@ import sys
 import logging
 
 from loguru import logger
-from starlette.config import Config
-from starlette.datastructures import Secret
 
 from core.logging import InterceptHandler
 
@@ -37,14 +35,12 @@ class Settings(BaseSettings):
     with environment variables.
     """
 
-    config = Config(".env")
-
     API_PREFIX = "/api"
     VERSION = "0.1.0"
-    DEBUG: bool = config("DEBUG", cast=bool, default=False)
-    SECRET_KEY: Secret = config("SECRET_KEY", cast=Secret, default="")
+    DEBUG: bool = True
+    SECRET_KEY: str
 
-    PROJECT_NAME: str = config("PROJECT_NAME", default="test4")
+    PROJECT_NAME: str
 
     # logging configuration
     LOGGING_LEVEL = logging.DEBUG if DEBUG else logging.INFO
@@ -52,6 +48,8 @@ class Settings(BaseSettings):
         handlers=[InterceptHandler(level=LOGGING_LEVEL)], level=LOGGING_LEVEL
     )
     logger.configure(handlers=[{"sink": sys.stderr, "level": LOGGING_LEVEL}])
+
+    FROM_DOCKER_COMPOSE: str
 
     host: str = "127.0.0.1"
     port: int = 8000
@@ -66,7 +64,7 @@ class Settings(BaseSettings):
     log_level: LogLevel = LogLevel.INFO
 
     # Variables for the database
-    db_host: str = config("DB_HOST", cast=str, default="")
+    db_host: str
     db_port: int = 5432
     db_user: str = "postgres"
     db_pass: str = "postgres"
@@ -114,11 +112,6 @@ class Settings(BaseSettings):
             password=self.redis_pass,
             path=path,
         )
-
-    class Config:
-        env_file = ".env"
-        env_prefix = "FASTAPI_V1_"
-        env_file_encoding = "utf-8"
 
 
 settings = Settings()
