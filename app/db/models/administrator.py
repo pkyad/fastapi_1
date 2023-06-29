@@ -50,5 +50,15 @@ class TenantT(BaseModel):
     users: list["AdministratorT"]
 
 
+class TenantSimpleT(BaseModel):
+    id: int
+    name: str
+    is_active: bool
+    expiry_date: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+
 TenantT.update_forward_refs()
 AdministratorT.update_forward_refs()

@@ -13,6 +13,7 @@ from db.models import load_all_models
 
 from cache.lifetime import init_redis, shutdown_redis
 from settings import settings
+from prometheus_fastapi_instrumentator import Instrumentator
 
 
 print(settings.dict())

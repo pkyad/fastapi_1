@@ -4,13 +4,13 @@ from fastapi import APIRouter, Depends, Request
 
 from db.dependencies import get_db_session
 from db.models.notes import Note, NoteT
-from db.models.administrator import Tenant, TenantT
+from db.models.administrator import Tenant, TenantT, TenantSimpleT
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload, joinedload
 from cache.dependency import get_redis_pool
 from redis.asyncio import ConnectionPool, Redis
-
+from core.monitoring import COUNT_METRIC
 
 router = APIRouter()
 
@@ -97,16 +97,12 @@ async def getTanants(request: Request, db: AsyncSession = Depends(get_db_session
 async def getTenantsWithJoin(
     request: Request, db: AsyncSession = Depends(get_db_session)
 ):
+    COUNT_METRIC.labels("with-join").inc()
     db.expire_on_commit = False
     q = await db.scalars(
         select(Tenant).options(joinedload(Tenant.users, innerjoin=True))
     )
-    # print(q.all(), dir(q))
-    # return q.all()
 
-    # results = q.fetchall()
-    # print("results", results)
-    print("-----------------")
     return [
         TenantT(
             id=r.id,
@@ -129,6 +125,21 @@ async def getTenantsWithJoin(
         )
         for r in q.unique()
     ]
+
+
+@router.get(
+    "/tenant-with-auto-serializer/",
+    response_model=TenantSimpleT,
+    name="db-test:get-data-with-auto-serializer",
+)
+async def getTenantsWithJoin(
+    request: Request, db: AsyncSession = Depends(get_db_session)
+):
+    db.expire_on_commit = False
+    print(dir(select(Tenant)))
+    q = await db.scalars(select(Tenant).limit(1))
+
+    return TenantSimpleT.from_orm(q.first())
 
 
 @router.get(

@@ -20,6 +20,7 @@ redis = {version = "^4.4.2", extras = ["hiredis"]}
 httptools = "^0.5.0"
 greenlet = "^2.0.2"
 coverage = "^7.2.1"
+prometheus-fastapi-instrumentator="^6.0.0"
 
 # Remove this and add `types-redis`
 # when the issue https://github.com/python/typeshed/issues/8242 is resolved.

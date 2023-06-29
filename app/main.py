@@ -5,6 +5,8 @@ from api.routes.api import router as api_router
 from settings import settings
 from lifetime import register_shutdown_event, register_startup_event
 from http import HTTPStatus
+from prometheus_fastapi_instrumentator import Instrumentator
+from core.monitoring import http_requested_languages_total
 
 
 def get_application() -> FastAPI:
@@ -15,6 +17,9 @@ def get_application() -> FastAPI:
     pre_load = False
     register_startup_event(application)
     register_shutdown_event(application)
+    instrumentator = Instrumentator()
+    instrumentator.add(http_requested_languages_total())
+    instrumentator.instrument(application).expose(application)
 
     @application.middleware("http")
     # type: ignore
