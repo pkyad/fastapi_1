@@ -1,8 +1,8 @@
 import sqlalchemy as sa
+from sqlalchemy.orm import DeclarativeBase
+
 
 meta = sa.MetaData()
-
-from sqlalchemy.orm import DeclarativeBase
 
 
 class Model(DeclarativeBase):
