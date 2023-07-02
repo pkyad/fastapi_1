@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, Request
 
 from db.dependencies import get_db_session
 from db.models.notes import Note, NoteT
+from db.models.sql_models import *
 from db.models.administrator import *
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select

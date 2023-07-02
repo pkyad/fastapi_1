@@ -39,6 +39,7 @@ httpx = "^0.23.3"
 pytest-cov = "^4.0.0"
 anyio = "^3.6.2"
 trio = "^0.21"
+fakeredis = "^2.5.0"
 
 [tool.poetry.group.aws]
 optional = true

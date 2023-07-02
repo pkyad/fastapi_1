@@ -1,6 +1,11 @@
 import pytest
 from httpx import AsyncClient
 from typing import Any, AsyncGenerator
+from fakeredis import FakeServer
+from fakeredis.aioredis import FakeConnection
+from redis.asyncio import ConnectionPool
+from cache.dependency import get_redis_pool
+
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -91,9 +96,13 @@ def fastapi_app(
 
     :return: fastapi app with mocked dependencies.
     """
+    server = FakeServer()
+    server.connected = True
+    pool = ConnectionPool(connection_class=FakeConnection, server=server)
+
     application = get_application()
     application.dependency_overrides[get_db_session] = lambda: dbsession
-    # application.dependency_overrides[get_redis_pool] = lambda: fake_redis_pool
+    application.dependency_overrides[get_redis_pool] = lambda: pool
     return application  # noqa: WPS331
 
 
