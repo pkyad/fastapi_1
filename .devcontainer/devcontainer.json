@@ -6,9 +6,8 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "esbenp.prettier-vscode",
-                "unifiedjs.vscode-mdx",
-                "dbaeumer.vscode-eslint"
+                "ms-python.autopep8",
+                "ms-python.black-formatter"
             ]
         }
     }
