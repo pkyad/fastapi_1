@@ -2,6 +2,8 @@
 
 fastapiv2
 
+uvicorn main:app --reload --host 0.0.0.0 --port 8080
+
 ## Development Requirements
 
 - Python3.11.0

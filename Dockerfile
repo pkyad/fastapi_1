@@ -2,7 +2,11 @@ FROM python:3.11.3
 
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /app
+WORKDIR /workspace
+RUN apt update
+RUN apt install zsh nano -y
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" -y
+RUN echo "zsh" >> ~/.bashrc 
 
 COPY poetry.lock pyproject.toml ./
 RUN pip install --upgrade pip && \
@@ -11,10 +15,3 @@ RUN pip install --upgrade pip && \
 
 ARG DEV=true
 RUN poetry install
-
-COPY ./app/ ./
-
-ENV PYTHONPATH "${PYTHONPATH}:/app"
-
-EXPOSE 8080
-CMD uvicorn main:app --host 0.0.0.0 --port 8080
